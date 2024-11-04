@@ -2,7 +2,7 @@
 import { useState } from "react";
 import DownloadProgress from "./DownloadProgress";
 
-const API_URL = "http://localhost:3151";
+const API_URL = "https://freetoolserver.org";
 
 function VideoResult({ data }) {
   const [isDownloading, setIsDownloading] = useState(false);
@@ -19,7 +19,7 @@ function VideoResult({ data }) {
 
       // Trigger the download
       const response = await fetch(
-        `${API_URL}/download/${data.videoId}/${quality}`,
+        `${API_URL}/download-youtube-video/${data.videoId}/${quality}`,
         {
           method: "GET",
         }

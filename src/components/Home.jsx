@@ -4,7 +4,7 @@ import VideoInput from "./VideoInput";
 import QuickHelp from "./QuickHelp";
 import VideoResult from "./VideoResult";
 
-const API_URL = "http://localhost:3151";
+const API_URL = "https://freetoolserver.org";
 
 function Home() {
   const [loading, setLoading] = useState(false);

@@ -4,7 +4,7 @@
 import { useState, useEffect } from "react";
 import "./DownloadProgress.css";
 
-const API_URL = "http://localhost:3151";
+const API_URL = "https://freetoolserver.org";
 
 function DownloadProgress({ videoId, quality, onComplete, onError }) {
   const [progress, setProgress] = useState(0);
