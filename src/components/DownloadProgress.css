@@ -1,0 +1,200 @@
+.download-progress-container {
+  background: linear-gradient(145deg, #ffffff, #f0f0f0);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  margin: 20px 0;
+  transition: all 0.3s ease;
+}
+
+.download-progress-container:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.progress-title {
+  font-weight: 700;
+  color: #2c3e50;
+  font-size: 1.1em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.progress-title::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.downloading .progress-title::before {
+  background: #ff0000;
+  animation: pulse 1.5s infinite;
+}
+
+.complete .progress-title::before {
+  background: #2ecc71;
+}
+
+.error .progress-title::before {
+  background: #e74c3c;
+}
+
+.file-size {
+  color: #7f8c8d;
+  font-size: 0.9em;
+  font-weight: 600;
+  background: rgba(0, 0, 0, 0.05);
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.progress-bar-container {
+  position: relative;
+  background: #edf2f7;
+  height: 24px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.progress-bar {
+  position: relative;
+  height: 100%;
+  border-radius: 12px;
+  transition: width 0.3s ease-out;
+}
+
+.progress-bar.downloading {
+  background: linear-gradient(90deg, #000000, #ff0000);
+}
+
+.progress-bar.complete {
+  background: linear-gradient(90deg, #2ecc71, #27ae60);
+}
+
+.progress-bar.error {
+  background: linear-gradient(90deg, #e74c3c, #c0392b);
+}
+
+.progress-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    transparent 100%
+  );
+  animation: glow 2s linear infinite;
+}
+
+.progress-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  font-size: 0.9em;
+}
+
+.error-message {
+  color: #e74c3c;
+  margin-top: 12px;
+  text-align: center;
+  font-weight: 600;
+  padding: 8px;
+  background: rgba(231, 76, 60, 0.1);
+  border-radius: 6px;
+  border: 1px solid rgba(231, 76, 60, 0.2);
+}
+
+@keyframes glow {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.download-button {
+  background: linear-gradient(145deg, #3498db, #2980b9);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 5px;
+}
+
+.download-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+}
+
+.download-button .file-size-tag {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.8em;
+}
+
+.download-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+@media (max-width: 768px) {
+  .download-progress-container {
+    padding: 15px;
+  }
+
+  .progress-bar-container {
+    height: 20px;
+  }
+
+  .download-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
