@@ -17,6 +17,12 @@ function Header() {
         >
           Help
         </Link>
+        <Link
+          to="/grow-youtube"
+          className={location.pathname === "/grow-youtube" ? "active" : ""}
+        >
+          Grow YouTube
+        </Link>
       </nav>
     </header>
   );
