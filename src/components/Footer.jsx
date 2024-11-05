@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function Footer() {
   return (
     <footer className="footer">
@@ -7,7 +9,8 @@ function Footer() {
           reserved
         </p>
         <div className="footer-links">
-          <a href="/help">Help</a>
+          <Link to="/help">Help</Link>
+          <Link to="/grow-youtube">Grow Your YouTube Channel</Link>
         </div>
       </div>
     </footer>
