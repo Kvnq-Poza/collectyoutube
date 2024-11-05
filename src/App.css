@@ -28,7 +28,8 @@ body {
   align-items: center;
   padding: 15px 0;
   border-bottom: 1px solid #eee;
-  font-family: Nosifer, sans-serif;
+  font-family: Nosifer, "Franklin Gothic Medium", "Arial Narrow", Arial,
+    sans-serif;
   width: 100%;
 }
 
@@ -46,6 +47,7 @@ body {
   gap: 20px;
   width: 100%;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 @media (min-width: 768px) {
@@ -352,23 +354,51 @@ body {
   }
 }
 
-.help-page {
+.help-page,
+.grow-page {
   max-width: 800px;
   margin: 0 auto;
   padding: 15px;
 }
 
+.help-page h1,
+.grow-page h1 {
+  text-align: center;
+  font-family: Nosifer, "Franklin Gothic Medium", "Arial Narrow", Arial,
+    sans-serif;
+}
+
 @media (min-width: 768px) {
-  .help-page {
+  .help-page,
+  .grow-page {
     padding: 20px;
   }
 }
 
-.help-section {
+.help-section,
+.grow-section {
   margin-bottom: 30px;
   background: #f9f9f9;
   padding: 15px;
   border-radius: 8px;
+}
+
+.grow-section {
+  text-align: justify;
+}
+
+.grow-section li:not(:last-child) {
+  margin-bottom: 10px;
+}
+
+.grow-section a {
+  color: #ff0000;
+  text-decoration: none;
+  transition: color 0.3s ease-in-out;
+}
+
+.grow-section a:hover {
+  color: black;
 }
 
 @media (min-width: 768px) {
@@ -378,7 +408,8 @@ body {
   }
 }
 
-.help-section h2 {
+.help-section h2,
+.grow-section h2 {
   color: #333;
   margin-bottom: 15px;
   border-bottom: 2px solid #ddd;
