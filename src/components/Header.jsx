@@ -6,7 +6,9 @@ function Header() {
 
   return (
     <header className="header">
-      <img src={logo} alt="CollectYoutube Logo" className="logo" />
+      <Link to="/">
+        <img src={logo} alt="CollectYoutube Logo" className="logo" />
+      </Link>
       <nav>
         <Link to="/" className={location.pathname === "/" ? "active" : ""}>
           Home
