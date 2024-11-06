@@ -4,20 +4,25 @@ import DownloadProgress from "./DownloadProgress";
 
 const API_URL = "https://freetoolserver.org";
 
+const RESOLUTIONS = {
+  low: "480p",
+  medium: "720p",
+  high: "1080p",
+};
+
 function VideoResult({ data }) {
   const [isDownloading, setIsDownloading] = useState(false);
-  const [activeVideoId, setActiveVideoId] = useState(null);
   const [activeQuality, setActiveQuality] = useState(null);
   const [error, setError] = useState(null);
+
+  console.log(data);
 
   const handleDownload = async (quality) => {
     try {
       setIsDownloading(true);
-      setActiveVideoId(data.videoId);
-      setActiveQuality(quality);
+      setActiveQuality(RESOLUTIONS[quality]);
       setError(null);
 
-      // Trigger the download
       const response = await fetch(
         `${API_URL}/download-youtube-video/${data.videoId}/${quality}`,
         {
@@ -29,42 +34,28 @@ function VideoResult({ data }) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      // Handle the file download
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `${data.title}_${quality}.mp4`;
+      a.download = `${data.title}_${RESOLUTIONS[quality]}.mp4`;
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
+
+      setTimeout(() => {
+        setIsDownloading(false);
+        setActiveQuality(null);
+      }, 2000);
     } catch (error) {
       console.error("Download error:", error);
       setError(error);
-      handleDownloadError(error);
+      setTimeout(() => {
+        setIsDownloading(false);
+        setActiveQuality(null);
+      }, 3000);
     }
-  };
-
-  const handleDownloadComplete = () => {
-    setTimeout(() => {
-      setIsDownloading(false);
-      setActiveVideoId(null);
-      setActiveQuality(null);
-    }, 2000);
-  };
-
-  const handleDownloadError = (error) => {
-    setError(error);
-    setTimeout(() => {
-      setIsDownloading(false);
-      setActiveVideoId(null);
-      setActiveQuality(null);
-    }, 3000);
-  };
-
-  const getQualityFormat = (quality) => {
-    return data.formats.find((format) => format.quality === quality);
   };
 
   return (
@@ -84,29 +75,18 @@ function VideoResult({ data }) {
 
       <div className="download-section">
         {isDownloading ? (
-          <DownloadProgress
-            videoId={activeVideoId}
-            quality={activeQuality}
-            onComplete={handleDownloadComplete}
-            onError={handleDownloadError}
-          />
+          <DownloadProgress quality={activeQuality} videoTitle={data.title} />
         ) : (
           <div className="download-buttons">
-            {["high", "medium", "low"].map((quality) => {
-              const format = getQualityFormat(quality);
-              return (
-                <button
-                  key={quality}
-                  onClick={() => handleDownload(quality)}
-                  className="download-button"
-                >
-                  Download {quality.charAt(0).toUpperCase() + quality.slice(1)}
-                  {format?.filesize && (
-                    <span className="file-size-tag">{format.filesize}</span>
-                  )}
-                </button>
-              );
-            })}
+            {Object.keys(RESOLUTIONS).map((quality) => (
+              <button
+                key={quality}
+                onClick={() => handleDownload(quality)}
+                className="download-button"
+              >
+                Download {RESOLUTIONS[quality]}
+              </button>
+            ))}
           </div>
         )}
 
