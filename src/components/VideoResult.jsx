@@ -102,7 +102,9 @@ function VideoResult({ data }) {
 
           <div className="video-actions">
             <button
-              onClick={() => handleCopyUrl(data.url)}
+              onClick={() =>
+                handleCopyUrl(`https://www.youtube.com/watch?v=${data.videoId}`)
+              }
               className="action-button copy-button"
               title="Copy video URL"
             >
@@ -119,13 +121,18 @@ function VideoResult({ data }) {
               )}
             </button>
             <button
-              onClick={() => handleViewVideo(data.url)}
+              onClick={() =>
+                handleViewVideo(
+                  `https://www.youtube.com/watch?v=${data.videoId}`
+                )
+              }
               className="action-button view-button"
               title="Open video in new tab"
             >
               <ExternalLink />
               <span>View</span>
             </button>
+
             <button
               onClick={() => setSelectedForDownload(true)}
               className="action-button download-button"
