@@ -3,6 +3,7 @@ import { useState } from "react";
 import VideoInput from "../components/VideoInput";
 import QuickHelp from "../components/QuickHelp";
 import VideoResult from "../components/VideoResult";
+import VideoGallery from "../components/VideoGallery";
 
 const API_URL = "https://freetoolserver.org";
 
@@ -28,7 +29,11 @@ function Home() {
       }
 
       const data = await response.json();
-      setVideoData(data);
+      if (type === "url") {
+        setVideoData(data);
+      } else {
+        setVideoData({ videos: data.videos });
+      }
     } catch (err) {
       setError(err.message);
     } finally {
@@ -46,7 +51,11 @@ function Home() {
           {loading ? (
             <div className="loading">Loading...</div>
           ) : videoData ? (
-            <VideoResult data={videoData} />
+            videoData.videos ? (
+              <VideoGallery videos={videoData.videos} />
+            ) : (
+              <VideoResult data={videoData} />
+            )
           ) : (
             <QuickHelp />
           )}
