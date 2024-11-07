@@ -5,13 +5,40 @@ function VideoInput({ onSubmit }) {
   const [url, setUrl] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [multipleUrls, setMultipleUrls] = useState("");
+  const [multipleUrlsError, setMultipleUrlsError] = useState("");
+
+  const validateMultipleUrls = (urls) => {
+    const urlList = urls
+      .trim()
+      .split("\n")
+      .filter((url) => url.trim());
+    if (urlList.length > 10) {
+      setMultipleUrlsError("Maximum 10 URLs allowed");
+      return false;
+    }
+    setMultipleUrlsError("");
+    return true;
+  };
 
   const handleSubmit = (type, value) => {
     if (!value.trim()) {
       alert("Please enter a valid input");
       return;
     }
+
+    if (type === "multiple") {
+      if (!validateMultipleUrls(value)) {
+        return;
+      }
+    }
+
     onSubmit(value, type);
+  };
+
+  const handleMultipleUrlsChange = (e) => {
+    const urls = e.target.value;
+    setMultipleUrls(urls);
+    validateMultipleUrls(urls);
   };
 
   return (
@@ -48,12 +75,22 @@ function VideoInput({ onSubmit }) {
       <div className="input-group">
         <textarea
           value={multipleUrls}
-          onChange={(e) => setMultipleUrls(e.target.value)}
-          placeholder="Paste Youtube links separated by new lines"
+          onChange={handleMultipleUrlsChange}
+          placeholder="Paste Youtube links separated by new lines (maximum 10 URLs)"
+          className={multipleUrlsError ? "error" : ""}
         />
+        {multipleUrlsError && (
+          <div
+            className="error-message"
+            style={{ color: "red", fontSize: "0.8rem" }}
+          >
+            {multipleUrlsError}
+          </div>
+        )}
         <button
           onClick={() => handleSubmit("multiple", multipleUrls)}
           className="go-button"
+          disabled={!!multipleUrlsError}
         >
           GO
         </button>
