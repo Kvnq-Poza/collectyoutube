@@ -27,13 +27,6 @@ function Help() {
               videos
             </p>
           </li>
-          <li>
-            <h3>Method 4: Page Source</h3>
-            <p>
-              Paste the source code of a YouTube page to extract and download
-              all videos
-            </p>
-          </li>
         </ol>
       </section>
 
