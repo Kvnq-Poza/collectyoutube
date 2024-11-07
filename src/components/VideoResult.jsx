@@ -1,6 +1,8 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import DownloadProgress from "./DownloadProgress";
+import { ExternalLink, Download, Copy, CheckCircle2 } from "lucide-react";
+import "./VideoGallery.css";
 
 const API_URL = "https://freetoolserver.org";
 
@@ -14,14 +16,25 @@ function VideoResult({ data }) {
   const [isDownloading, setIsDownloading] = useState(false);
   const [activeQuality, setActiveQuality] = useState(null);
   const [error, setError] = useState(null);
+  const [selectedForDownload, setSelectedForDownload] = useState(false);
+  const [copiedUrl, setCopiedUrl] = useState(false);
 
-  console.log(data);
+  const handleCopyUrl = (url) => {
+    navigator.clipboard.writeText(url);
+    setCopiedUrl(true);
+    setTimeout(() => setCopiedUrl(false), 2000);
+  };
+
+  const handleViewVideo = (url) => {
+    window.open(url, "_blank");
+  };
 
   const handleDownload = async (quality) => {
     try {
       setIsDownloading(true);
       setActiveQuality(RESOLUTIONS[quality]);
       setError(null);
+      setSelectedForDownload(false);
 
       const response = await fetch(
         `${API_URL}/download-youtube-video/${data.videoId}/${quality}`,
@@ -59,42 +72,101 @@ function VideoResult({ data }) {
   };
 
   return (
-    <div className="video-result">
-      <div className="video-info">
-        <img src={data.thumbnail} alt={data.title} className="thumbnail" />
-        <div className="video-details">
-          <h3>{data.title}</h3>
-          <p className="video-author">
-            <strong>Author:</strong> {data.author}
-          </p>
-          <p>
-            <strong>Duration:</strong> {data.duration}
-          </p>
+    <div className="video-gallery">
+      <div className="video-card">
+        <div className="thumbnail-container">
+          <img
+            src={data.thumbnail}
+            alt={data.title}
+            className="video-thumbnail"
+          />
+          <span className="video-duration">{data.duration}</span>
         </div>
-      </div>
 
-      <div className="download-section">
-        {isDownloading ? (
-          <DownloadProgress quality={activeQuality} videoTitle={data.title} />
-        ) : (
-          <div className="download-buttons">
-            {Object.keys(RESOLUTIONS).map((quality) => (
+        <div className="video-info">
+          <div className="video-header">
+            <img
+              src={`https://ui-avatars.com/api/?name=${encodeURIComponent(
+                data.author
+              )}&background=random`}
+              alt={data.author}
+              className="author-avatar"
+            />
+            <div className="title-author">
+              <h3 className="video-title">{data.title}</h3>
+              <div className="channel-info">
+                <span className="video-author">{data.author}</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="video-actions">
+            <button
+              onClick={() => handleCopyUrl(data.url)}
+              className="action-button copy-button"
+              title="Copy video URL"
+            >
+              {copiedUrl ? (
+                <>
+                  <CheckCircle2 />
+                  <span>Copied</span>
+                </>
+              ) : (
+                <>
+                  <Copy />
+                  <span>Copy</span>
+                </>
+              )}
+            </button>
+            <button
+              onClick={() => handleViewVideo(data.url)}
+              className="action-button view-button"
+              title="Open video in new tab"
+            >
+              <ExternalLink />
+              <span>View</span>
+            </button>
+            <button
+              onClick={() => setSelectedForDownload(true)}
+              className="action-button download-button"
+              title="Download video"
+            >
+              <Download />
+              <span>Download</span>
+            </button>
+          </div>
+
+          {selectedForDownload && !isDownloading && (
+            <div className="quality-selector">
+              <div className="action-buttons">
+                <button onClick={() => handleDownload("low")}>480p</button>
+                <button onClick={() => handleDownload("medium")}>720p</button>
+                <button onClick={() => handleDownload("high")}>1080p</button>
+              </div>
               <button
-                key={quality}
-                onClick={() => handleDownload(quality)}
-                className="download-button"
+                onClick={() => setSelectedForDownload(false)}
+                className="close-button"
               >
-                Download {RESOLUTIONS[quality]}
+                Close
               </button>
-            ))}
-          </div>
-        )}
+            </div>
+          )}
 
-        {error && (
-          <div className="error-message">
-            {error.message || "An error occurred during download"}
-          </div>
-        )}
+          {isDownloading && (
+            <DownloadProgress quality={activeQuality} videoTitle={data.title} />
+          )}
+
+          {error && (
+            <div className="quality-selector">
+              <div className="error-message">
+                {error.message || "An error occurred during download"}
+              </div>
+              <button onClick={() => setError(null)} className="close-button">
+                Close
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
