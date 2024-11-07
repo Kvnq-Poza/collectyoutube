@@ -194,60 +194,6 @@ body {
   }
 }
 
-.video-result {
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 10px;
-}
-
-@media (min-width: 768px) {
-  .video-result {
-    padding: 0;
-  }
-}
-
-.video-result img {
-  width: 100%;
-  max-width: 560px;
-  height: auto;
-  margin: 0 auto;
-}
-
-.download-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  max-width: 100%;
-  margin: 20px auto 0;
-  padding: 0 10px;
-}
-
-@media (min-width: 640px) {
-  .download-buttons {
-    flex-direction: row;
-    max-width: none;
-    justify-content: center;
-    padding: 0;
-  }
-}
-
-.download-buttons button {
-  background: var(--primary-gradient);
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: opacity 0.2s;
-  width: 100%;
-}
-
-@media (min-width: 640px) {
-  .download-buttons button {
-    width: auto;
-  }
-}
-
 .loading {
   text-align: center;
   padding: 30px;
