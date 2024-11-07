@@ -44,7 +44,7 @@ const VideoGallery = ({ videos }) => {
     const handleBeforeUnload = (event) => {
       if (downloadingVideo) {
         event.preventDefault();
-        event.returnValue = ""; // Most browsers display a default confirmation dialog
+        event.returnValue = "";
       }
     };
 
