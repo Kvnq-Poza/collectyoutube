@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useState } from "react";
 import VideoInput from "../components/VideoInput";
 import QuickHelp from "../components/QuickHelp";
@@ -29,15 +28,53 @@ function Home() {
       }
 
       const data = await response.json();
-      if (type === "url") {
-        setVideoData(data);
+
+      // Handle different response types
+      if (type === "search" && data.videos) {
+        // Search query results -> Use VideoGallery
+        setVideoData({ type: "search", videos: data.videos });
+      } else if (type === "multiple" && data.videos) {
+        // Multiple URLs results -> Use multiple VideoResults
+        setVideoData({ type: "multiple", videos: data.videos });
       } else {
-        setVideoData({ videos: data.videos });
+        // Single URL result -> Use single VideoResult
+        setVideoData({ type: "single", ...data });
       }
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const renderContent = () => {
+    if (loading) {
+      return <div className="loading">Loading...</div>;
+    }
+
+    if (error) {
+      return <div className="error">{error}</div>;
+    }
+
+    if (!videoData) {
+      return <QuickHelp />;
+    }
+
+    switch (videoData.type) {
+      case "search":
+        return <VideoGallery videos={videoData.videos} />;
+      case "multiple":
+        return (
+          <>
+            {videoData.videos.map((video) => (
+              <VideoResult key={video.videoId} data={video} />
+            ))}
+          </>
+        );
+      case "single":
+        return <VideoResult data={videoData} />;
+      default:
+        return <QuickHelp />;
     }
   };
 
@@ -47,19 +84,7 @@ function Home() {
         <div className="input-section">
           <VideoInput onSubmit={handleVideoFetch} />
         </div>
-        <div className="result-section">
-          {loading ? (
-            <div className="loading">Loading...</div>
-          ) : videoData ? (
-            videoData.videos ? (
-              <VideoGallery videos={videoData.videos} />
-            ) : (
-              <VideoResult data={videoData} />
-            )
-          ) : (
-            <QuickHelp />
-          )}
-        </div>
+        <div className="result-section">{renderContent()}</div>
       </div>
     </main>
   );
