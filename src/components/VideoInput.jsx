@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 function VideoInput({ onSubmit }) {
   const [url, setUrl] = useState("");
@@ -20,20 +20,34 @@ function VideoInput({ onSubmit }) {
     return true;
   };
 
-  const handleSubmit = (type, value) => {
-    if (!value.trim()) {
-      alert("Please enter a valid input");
-      return;
-    }
+  const validateUrl = (input) => {
+    const youtubeRegex =
+      /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)[\w-]+$/;
+    return youtubeRegex.test(input);
+  };
 
-    if (type === "multiple") {
-      if (!validateMultipleUrls(value)) {
+  const handleSubmit = useCallback(
+    (type, value) => {
+      if (!value.trim()) {
+        alert("Please enter a valid input");
         return;
       }
-    }
 
-    onSubmit(value, type);
-  };
+      if (type === "url" && !validateUrl(value)) {
+        alert("Please enter a valid YouTube URL");
+        return;
+      }
+
+      if (type === "multiple" && !validateMultipleUrls(value)) {
+        return;
+      }
+
+      onSubmit(value, type);
+    },
+    [onSubmit]
+  );
+
+  useEffect(() => {});
 
   const handleMultipleUrlsChange = (e) => {
     const urls = e.target.value;
