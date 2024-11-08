@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import VideoInput from "../components/VideoInput";
 import QuickHelp from "../components/QuickHelp";
 import VideoResult from "../components/VideoResult";
 import VideoGallery from "../components/VideoGallery";
+
+import { useLocation } from "react-router-dom";
 
 const API_URL = "https://freetoolserver.org";
 
@@ -10,6 +12,25 @@ function Home() {
   const [loading, setLoading] = useState(false);
   const [videoData, setVideoData] = useState(null);
   const [error, setError] = useState(null);
+
+  const location = useLocation();
+
+  const validateUrl = (input) => {
+    const youtubeRegex =
+      /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)[\w-]+$/;
+    return youtubeRegex.test(input);
+  };
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const videoParam = urlParams.get("v");
+    if (videoParam) {
+      const videoUrl = `https://www.youtube.com/watch?v=${videoParam}`;
+      if (validateUrl(videoUrl)) {
+        handleVideoFetch(videoUrl, "url");
+      }
+    }
+  }, [location.search]);
 
   const handleVideoFetch = async (url, type) => {
     setLoading(true);
