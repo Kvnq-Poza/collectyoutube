@@ -16,9 +16,10 @@ function App() {
         <div className="app">
           <Header />
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route index element={<Home />} />
             <Route path="help" element={<Help />} />
             <Route path="grow-youtube" element={<GrowYoutube />} />
+            <Route path="watch" element={<Home />} />
           </Routes>
           <Footer />
         </div>
