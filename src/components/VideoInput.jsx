@@ -1,11 +1,17 @@
 /* eslint-disable react/prop-types */
 import { useCallback, useEffect, useState } from "react";
 
-function VideoInput({ onSubmit }) {
+function VideoInput({ onSubmit, videoUrl }) {
   const [url, setUrl] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [multipleUrls, setMultipleUrls] = useState("");
   const [multipleUrlsError, setMultipleUrlsError] = useState("");
+
+  useEffect(() => {
+    if (videoUrl) {
+      setUrl(videoUrl);
+    }
+  }, [videoUrl]);
 
   const validateMultipleUrls = (urls) => {
     const urlList = urls

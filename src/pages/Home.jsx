@@ -11,6 +11,7 @@ const API_URL = "https://freetoolserver.org";
 function Home() {
   const [loading, setLoading] = useState(false);
   const [videoData, setVideoData] = useState(null);
+  const [videoUrl, setVideoUrl] = useState("");
   const [error, setError] = useState(null);
 
   const location = useLocation();
@@ -28,6 +29,7 @@ function Home() {
       const videoUrl = `https://www.youtube.com/watch?v=${videoParam}`;
       if (validateUrl(videoUrl)) {
         handleVideoFetch(videoUrl, "url");
+        setVideoUrl(videoUrl);
       }
     }
   }, [location.search]);
@@ -103,7 +105,7 @@ function Home() {
     <main className="home">
       <div className="content-wrapper">
         <div className="input-section">
-          <VideoInput onSubmit={handleVideoFetch} />
+          <VideoInput onSubmit={handleVideoFetch} videoUrl={videoUrl} />
         </div>
         <div className="result-section">{renderContent()}</div>
       </div>
